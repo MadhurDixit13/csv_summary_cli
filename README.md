@@ -31,6 +31,13 @@ git clone https://github.com/MadhurDixit13/csv_summary_cli.git
 pip install csv-summary-cli
 ```
 
+Recommended
+
+```bash
+pip install pipx
+pipx install csv-summary-cli
+```
+
 Once installed, run it using:
 
 ```bash
