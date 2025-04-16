@@ -50,8 +50,10 @@ def summary(csv_files):
         except Exception as e:
             print(f"An error occurred while processing '{csv_file}': {e}")
 
+
 def main():
     csv_files = []
+    # Checking csv files
     for file in sys.argv[1:]:
         if re.search(r'\.csv$', file):
             csv_files.append(file)
