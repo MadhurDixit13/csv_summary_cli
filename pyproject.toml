@@ -9,3 +9,7 @@ dependencies = []
 
 [project.scripts]
 csv-summary = "csv_summary.cli:main"
+
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
