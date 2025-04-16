@@ -24,7 +24,8 @@ A command-line tool to summarize CSV files with basic statistics. Lightweight, f
 ## Installation
 
 ```bash
-pip install .
+pip install pipx
+pipx install https://github.com/MadhurDixit13/csv_summary_cli.git
 ```
 
 Or install it globally as a CLI tool:
