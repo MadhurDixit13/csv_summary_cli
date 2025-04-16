@@ -7,7 +7,7 @@ __pycache__/
 *.so
 
 # Distribution / packaging
-.csv
+*.csv
 generated-icon.png
 .replit
 replit.nix
