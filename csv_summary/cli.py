@@ -31,7 +31,7 @@ def summary(csv_files):
                 for i in range(num_cols):
                     f.seek(0)
                     reader = csv.reader(f)
-                    next(reader)  # Skip header
+                    next(reader)  # Skip the header
 
                     column_data = [row[i] for row in reader if len(row) > i]
                     if col_types[i] == 'int':
