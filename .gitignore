@@ -7,6 +7,9 @@ __pycache__/
 *.so
 
 # Distribution / packaging
+generated-icon.png
+.replit
+replit.nix
 .Python
 build/
 develop-eggs/

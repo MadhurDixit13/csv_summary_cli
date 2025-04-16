@@ -1,0 +1,8 @@
+Name,Age,Department,Salary,StartDate
+Alice,29,Engineering,85000,2019-08-01
+Bob,34,Marketing,62000,2018-03-15
+Charlie,25,Engineering,73000,2021-06-30
+Diana,45,HR,54000,2010-10-01
+Evan,38,Engineering,,2017-01-12
+Fay,30,Marketing,66000,2020-09-20
+Grace,,HR,58000,2015-07-25
