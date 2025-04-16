@@ -3,65 +3,62 @@ import re
 import csv
 
 def summary(csv_files):
-  num_rows = 0
-  num_cols = 0
-  col_names = []
-  col_types = []
-  for csv_file in csv_files:
-    with open(csv_file, 'r') as f:
-      print(f'Summarizing {csv_file}')
-      # count number of columns
-      first_line = f.readline()
-      f.readline()
-      second_line =  f.readline()
-      # split first line by comma to get column names
-      col_names = first_line.split(',')
-      # remove newline character from last column name
-      col_names[-1] = col_names[-1].strip()
-      # type of each column
-      for i in second_line.split(','):
-        if(i.isdigit()):
-          col_types.append('int')
-        else:
-          col_types.append('str')
-      num_cols = len(first_line.split(','))
-      # count number of rows
-      for line in f:
-        num_rows += 1
-      print(f'Number of rows: {num_rows}')
-      print(f'Number of columns: {num_cols}')
-      print(f'Column names: {col_names}')
-      print(f'Column types: {col_types}')
-      # reset file pointer to beginning of file  
-      f.seek(0)
-      # summarize the cols where type is int
-      reader = csv.reader(f)
-      header = next(reader) 
-      for i in range(len(header)):
-        column_data = [row[i] for row in reader]
-        if(col_types[i] == 'int'):
-          column_data = [int(x) for x in column_data if x != '']
-          mean = sum(column_data)/len(column_data)
-          std = (sum([(x-mean)**2 for x in column_data])/len(column_data))**0.5
-          mini = min(column_data)
-          maxi = max(column_data)
-          median = sorted(column_data)[len(column_data)//2]
-          print(f"Column {header[i]}: Mean = {mean}, Std = {std}, Min = {mini}, Max = {maxi}, Median = {median}")
-        # Reset file reader after each column iteration
-        f.seek(0)
-        next(csv.reader(f))
-      
-    
-    print('')
-  
-  
-    
+    for csv_file in csv_files:
+        print(f'\nSummarizing {csv_file}')
+        try:
+            with open(csv_file, 'r') as f:
+                num_rows = 0
+                col_names = []
+                col_types = []
 
-# user inputs csv files via command line which we read and summarize
-# print (sys.argv[1:])
-csv_files = [] 
+                # Read the header and sample second line to infer types
+                first_line = f.readline()
+                second_line = f.readline()
+
+                col_names = first_line.strip().split(',')
+                num_cols = len(col_names)
+
+                # Infer column types from the second line
+                for value in second_line.strip().split(','):
+                    col_types.append('int' if value.isdigit() else 'str')
+
+                # Count total number of rows
+                for line in f:
+                    num_rows += 1
+
+                print(f'Number of rows: {num_rows}')
+                print(f'Number of columns: {num_cols}')
+                print(f'Column names: {col_names}')
+                print(f'Column types: {col_types}')
+
+                # Process each column
+                for i in range(num_cols):
+                    f.seek(0)
+                    reader = csv.reader(f)
+                    next(reader)  # Skip header
+
+                    column_data = [row[i] for row in reader if len(row) > i]
+                    if col_types[i] == 'int':
+                        numeric_data = [int(x) for x in column_data if x.isdigit()]
+                        if numeric_data:
+                            mean = sum(numeric_data) / len(numeric_data)
+                            std = (sum([(x - mean) ** 2 for x in numeric_data]) / len(numeric_data)) ** 0.5
+                            mini = min(numeric_data)
+                            maxi = max(numeric_data)
+                            sorted_data = sorted(numeric_data)
+                            mid = len(sorted_data) // 2
+                            median = (sorted_data[mid - 1] + sorted_data[mid]) / 2 if len(sorted_data) % 2 == 0 else sorted_data[mid]
+                            print(f"Column '{col_names[i]}': Mean = {mean:.2f}, Std = {std:.2f}, Min = {mini}, Max = {maxi}, Median = {median:.2f}")
+        except FileNotFoundError:
+            print(f"Error: File '{csv_file}' not found.")
+        except Exception as e:
+            print(f"An error occurred while processing '{csv_file}': {e}")
+
+# Collect user-provided CSV files from command-line arguments
+csv_files = []
 for file in sys.argv[1:]:
-  is_csv = re.search(r'\.csv$', file)
-  if(is_csv):
-    csv_files.append(file)
+    if re.search(r'\.csv$', file):
+        csv_files.append(file)
+
+# Run the summary
 summary(csv_files)
